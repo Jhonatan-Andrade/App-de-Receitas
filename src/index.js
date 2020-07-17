@@ -10,10 +10,14 @@ import List from './page/list';
 import Ingredients from './page/ingredients';
 import Preparation from './page/preparation';
 
+import Theme from './config/themeSchema'
+
 const Stack = createStackNavigator();
 
 //Conponent do MyApp------------------------------------------------------------------------------------------
 export default function MyApp(){ 
+
+    const color = Theme.color
     return (
       <NavigationContainer>
         <Stack.Navigator  initialRouteName="List">
@@ -27,7 +31,7 @@ export default function MyApp(){
               headerStyle: {
                 height:70,       
               },
-              headerTintColor: '#fff',
+              headerTintColor: color,
             }
           }/>
 {/*-----------------------------------------------Ingredients---------------------------------------------- */}
@@ -38,7 +42,7 @@ export default function MyApp(){
               headerTransparent:true,
               title:'',
               headerStyle: {height:70},
-              headerTintColor: '#fff',
+              headerTintColor: color,
             }}
           />
           {/*-----------------------------------------------Preparation---------------------------------------------- */}
@@ -49,7 +53,7 @@ export default function MyApp(){
               headerTransparent:true,
               title:'',
               headerStyle: {height:70},
-              headerTintColor: '#fff',
+              headerTintColor: color,
             }}
           />
         </Stack.Navigator>

@@ -4,19 +4,19 @@ import { View, Text,StyleSheet,FlatList,SafeAreaView,TouchableOpacity ,Dimension
 import Icon from 'react-native-vector-icons/MaterialIcons'
 Icon.loadFont();
 const windowWidth = Dimensions.get('window').width;
+
+import Theme from '../config/themeSchema'
+
 //Conponent do Item------------------------------------------------------------------------------------------
 export default function Ingredients({route,navigation}) {  
   let name= route.params.name
   let ingredients =route.params.ingredients
   let preparation =route.params.preparation
- const [listEnd, setListEnd] =useState()
+  const [listEnd, setListEnd] =useState()
 
-  let nav = ()=>{navigation.navigate('Preparation',preparation)}
+  let nav = ()=>{navigation.navigate('Preparation',{preparation,name})}
 
   let endList =()=>{setListEnd(true)}
-let topList=()=>{
-  console.log('topList');
-}
   function Ok() {
     return (
       <TouchableOpacity style={styles.go} onPress={nav} >
@@ -27,14 +27,14 @@ let topList=()=>{
   function Nook() {
     return (
       <View style={styles.nook}>
-        <Icon style={styles.icon}  name="check" size={30} />
+        <Icon style={styles.icon}  name="expand-more" size={30} />
       </View>   
     );
   }
   return (
     <SafeAreaView style={styles.container}>
 
-      <View style={styles.titleIngredient}>
+      <View style={styles.titleReceita}>
         <Text style={styles.title}>{name}</Text>
       </View>
 
@@ -44,7 +44,7 @@ let topList=()=>{
         style={styles.list}
         data={ingredients}
         renderItem={({ item }) => <Ingredient item={item}  />}
-        keyExtractor={item=>item._id}
+        keyExtractor={item=>item.key}
         onEndReached={endList}
         onEndReachedThreshold={0.1}
         on
@@ -59,23 +59,22 @@ function Ingredient({item}) {
   return (
     <View>
       <View style={styles.view}>
-        <Text style={styles.label}>{item.name}</Text>
+        <Text style={styles.label}>{item.text}</Text>
       </View>
-    </View>
-        
+    </View>    
   );
 }
 //Styles------------------------------------------------------------------------------------------------------
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#273c75',
+    backgroundColor: Theme.background,
     alignItems: 'center',
     paddingTop:40 ,
     width:windowWidth,
   },
 
-  titleIngredient:{ 
+  titleReceita:{ 
     width:windowWidth,
     marginTop:30,
     flexDirection:'row',
@@ -86,7 +85,7 @@ const styles = StyleSheet.create({
   title:{
     fontSize:25,
     fontWeight:'bold',
-    color:'#FFFFFF',
+    color:Theme.color,
   },
 
   titlePage:{
@@ -97,7 +96,7 @@ const styles = StyleSheet.create({
     marginBottom:10,
     fontSize:20,
     fontWeight:'bold',
-    color:'#FFFFFF',
+    color:Theme.color,
   },
 
   list:{
@@ -113,7 +112,7 @@ const styles = StyleSheet.create({
 
   label: {
     margin: 8,
-    color:'#fff',
+    color:Theme.color,
     fontSize:16
   },
   seta:{
@@ -134,7 +133,7 @@ const styles = StyleSheet.create({
     width:200,
     height:50,
     borderRadius:50,
-    borderColor:'#fff',
+    borderColor:Theme.color,
     borderWidth:1,
     flexDirection: "row",
     alignItems:'center',
@@ -146,6 +145,6 @@ const styles = StyleSheet.create({
   icon:{
     position:'relative',
     right:0,
-    color:'#fff',
+    color:Theme.color,
   },
 });

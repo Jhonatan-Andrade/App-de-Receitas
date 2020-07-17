@@ -1,9 +1,11 @@
 //Import------------------------------------------------------------------------------------------------------
 import React, {useState,useEffect} from 'react';
-import { SafeAreaView,TouchableOpacity, FlatList, StyleSheet, Text,View,TextInput, ActivityIndicator} from 'react-native';
+import { SafeAreaView,TouchableOpacity,Alert, FlatList, StyleSheet, Text,View,TextInput, ActivityIndicator} from 'react-native';
 import Constants from 'expo-constants';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 Icon.loadFont();
+import Theme from '../config/themeSchema'
+
 
 //Conponent da List------------------------------------------------------------------------------------------------------
 export default function List({ navigation }) {
@@ -11,14 +13,13 @@ export default function List({ navigation }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [input, setInput] = useState('');
-  const [pesquisa, setPesquisa] = useState('');
 
   useEffect(() => {
     api()
   }, []); 
 
   function api(){
-    fetch('https://receita-data.herokuapp.com/api')
+    fetch('https://receita-data.herokuapp.com/api/dev')
     .then((response) => response.json())
     .then((json) => setData(json))
     .catch((error) => console.error(error))
@@ -28,91 +29,31 @@ export default function List({ navigation }) {
     let name = input.toLowerCase()
     for (let j = 0; j < data.length; j++) {
       if (data[j].name == name) {
-        setPesquisa(name);
         red(data[j])
+      }else{
+        AlertBox(name)
       }
     }
   }
   function red(item) {
-    navigation.push('Item',item)
+    navigation.push('Ingredients',item)
   }
   
-  const JHO =[
-    {
-      "ingredients": [
-        {
-          "_id": "1",
-          "name": "1 pitada de sal"
-        },
-        {
-          "_id": "2",
-          "name": "3 unidades de cenoura médias e cruas"
-        },
-        {
-          "_id": "3",
-          "name": "1 xícara (chá) de óleo de soja"
-        },
-        {
-          "_id": "4",
-          "name": "1 colher (sopa) de fermento químico em pó"
-        },
-        {
-          "_id": "5",
-          "name": "2 xícaras (chá) de farinha de trigo"
-        },
-        {
-          "_id": "6",
-          "name": "3 unidades de ovo"
-        },
-        {
-          "_id": "7",
-          "name": "2 xícaras (chá) de açúcar"
-        },
-        {      
-          "_id": "8",
-          "name": "********************************"
-        },
-        {      
-          "_id": "9",
-          "name": "********************************"
-        },
-        {      
-          "_id": "10",
-          "name": "********************************"
-        },
-        {      
-          "_id": "11",
-          "name": "********************************"
-        },
+  const AlertBox = (name) =>
+    Alert.alert(
+      `${name}`,
+      "A receita Não foi encontrada",
+      [
+        { text: "OK", onPress:()=>console.log("OK")}
       ],
-      "_id": "5f0e634330c8e70017c25c12",
-      "name": "bolo de cenoura",
-      "preparation":[
-        {      
-          "_id": "1",
-          "name": "Bata no liquidificador os ovos, as cenouras (em pedaços), o óleo e o sal."
-        },
-        {      
-          "_id": "2",
-          "name": "Numa tigela, misture o açúcar, o fermento e a farinha."
-        },
-        {      
-          "_id": "3",
-          "name": "Despeje a mistura do liquidificador para a tigela e misture bem."
-        },
-        {      
-          "_id": "4",
-          "name": "Leve para assar em forma untada e polvilhada com farinha."
-        },
-      ],
-      "__v": 1
-    }
-  ]
+      { cancelable: false }
+    );
 
+  const theme = Theme
   return (
     <SafeAreaView style={styles.container}>
 
-    {isLoading ? <ActivityIndicator size="large" color="#fff" /> : (
+    {isLoading ? <ActivityIndicator size="large" color={theme.color} /> : 
       <>
         <View style={styles.search}>
           <TextInput
@@ -131,22 +72,23 @@ export default function List({ navigation }) {
         </View>
         <FlatList
         style={styles.list}
-        data={JHO}
+        data={data}
         renderItem={({ item }) => <Item item={item}  onSelect={(item)=>{navigation.navigate('Ingredients',item)}}/>}
         keyExtractor={item=>item._id}
       />
     </>
-    )}
+    }
   </SafeAreaView>
   );
 }
 
 //Estrutura do Item------------------------------------------------------------------------------------------------------
 function Item({item,onSelect}) {
+  const color = Theme.seta
   return (
-      <TouchableOpacity style={styles.item} onPress={() => onSelect(item)} >
+      <TouchableOpacity style={styles.item} onPress={() => {onSelect(item)}} >
         <Text style={styles.text}>{item.name}</Text>
-        <Icon style={styles.icon}  name="keyboard-arrow-right" size={30}  color="#000" />
+        <Icon style={styles.icon}  name="keyboard-arrow-right" size={30}  color={color} />
       </TouchableOpacity>
   );
 }
@@ -159,7 +101,7 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-    backgroundColor: '#273c75',
+    backgroundColor: Theme.background,
     justifyContent:'center',
     alignItems:'center',
     marginTop: Constants.statusBarHeight,
@@ -172,9 +114,11 @@ const styles = StyleSheet.create({
   },
   input:{ 
     height: 50, 
-    backgroundColor: '#fff',
+    backgroundColor:Theme.input,
     width:250,
     borderRadius:10,
+    
+    color:Theme.color,
     marginRight:10,
     paddingHorizontal:10,
     fontSize:18,
@@ -191,7 +135,7 @@ const styles = StyleSheet.create({
     paddingTop: 70,
   },
   item: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Theme.box,
     borderRadius:10,
     paddingVertical: 15,
     paddingHorizontal: 20,
@@ -212,7 +156,7 @@ const styles = StyleSheet.create({
     width:260,
     fontSize: 20,
     fontWeight:'bold',
-    color:'#000000',
+    color:Theme.boxtitle,
     
   },
 });
