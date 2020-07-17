@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let s = '.1.2.3.4.5.6'
+        j(s)
+        function j(s) {
+            let a =s.split('.')
+            let o =[]
+            for (let i = 1; i < a.length; i++) {
+                o.push({item :a[i]})
+
+            }
+            console.log(o);
+        }
+  
+
+        
+
+    </script>
+</body>
+</html>
