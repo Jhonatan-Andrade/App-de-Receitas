@@ -9,6 +9,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import List from './page/list';
 import Ingredients from './page/ingredients';
 import Preparation from './page/preparation';
+import Settings from './page/settings'
 
 import Theme from './config/themeSchema'
 
@@ -18,6 +19,11 @@ const Stack = createStackNavigator();
 export default function MyApp(){ 
 
     const color = Theme.color
+    const background = Theme.background
+
+    const onSettings=({navigation})=>{
+      navigation.push('Ingredients',item)
+    }
     return (
       <NavigationContainer>
         <Stack.Navigator  initialRouteName="List">
@@ -25,15 +31,22 @@ export default function MyApp(){
           <Stack.Screen 
             name="List" 
             component={List} 
-            options={{  
+            options={{ 
               headerTransparent:true,
               title:'',
-              headerStyle: {
-                height:70,       
-              },
               headerTintColor: color,
-            }
-          }/>
+            }}
+          />
+          {/*-----------------------------------------------List---------------------------------------------- */}
+          <Stack.Screen 
+            name="Settings" 
+            component={Settings} 
+            options={{ 
+              headerTransparent:true,
+              title:'',
+              headerTintColor: color,
+            }}
+          />
 {/*-----------------------------------------------Ingredients---------------------------------------------- */}
           <Stack.Screen 
             name="Ingredients" 
@@ -41,7 +54,6 @@ export default function MyApp(){
             options={{ 
               headerTransparent:true,
               title:'',
-              headerStyle: {height:70},
               headerTintColor: color,
             }}
           />

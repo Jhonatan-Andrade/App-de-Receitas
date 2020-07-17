@@ -1,12 +1,12 @@
 //Import------------------------------------------------------------------------------------------------------
 import React, {useState,useEffect} from 'react';
-import { SafeAreaView,TouchableOpacity,Alert, FlatList, StyleSheet, Text,View,TextInput, ActivityIndicator} from 'react-native';
+import { SafeAreaView,TouchableOpacity,Alert, FlatList,Dimensions, StyleSheet, Text,View,TextInput, ActivityIndicator} from 'react-native';
 import Constants from 'expo-constants';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 Icon.loadFont();
 import Theme from '../config/themeSchema'
 
-
+const windowWidth = Dimensions.get('window').width;
 //Conponent da List------------------------------------------------------------------------------------------------------
 export default function List({ navigation }) {
 
@@ -39,7 +39,7 @@ export default function List({ navigation }) {
     navigation.push('Ingredients',item)
   }
   
-  const AlertBox = (name) =>
+  const AlertBox = (name) =>{
     Alert.alert(
       `${name}`,
       "A receita Não foi encontrada",
@@ -47,14 +47,23 @@ export default function List({ navigation }) {
         { text: "OK", onPress:()=>console.log("OK")}
       ],
       { cancelable: false }
-    );
+    );}
 
   const theme = Theme
+   const onSettings = ()=>{
+    navigation.push('Settings')
+   }
   return (
     <SafeAreaView style={styles.container}>
 
     {isLoading ? <ActivityIndicator size="large" color={theme.color} /> : 
       <>
+        <View style={styles.settings}>
+          <View style={styles.settingsView} ></View>
+          <TouchableOpacity style={styles.settingsIcon} onPress={onSettings} >
+            <Icon  name="settings" size={30}  color={theme.color} />
+          </TouchableOpacity>
+        </View>
         <View style={styles.search}>
           <TextInput
           style={styles.input}
@@ -105,20 +114,38 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
     marginTop: Constants.statusBarHeight,
+    paddingTop:20,
+  },
+  settings:{
+    width:windowWidth-100,
+    flexDirection:'row',
+    alignItems:'center',
+    height: 50,
+    marginHorizontal:50,
+  },
+  settingsView:{
+    width:windowWidth-120,
+  },
+  settingsIcon:{
+    width:50,
+    alignItems:'center',
+    justifyContent:'center',
+    height:50,
+    borderRadius:50,
+    backgroundColor:"#fff1",
   },
   search:{
-    marginTop:50,
+    marginTop:20,
     width:320,
     height: 50,
     flexDirection: 'row',
   },
   input:{ 
     height: 50, 
-    backgroundColor:Theme.input,
+    backgroundColor:'#fff',
     width:250,
     borderRadius:10,
-    
-    color:Theme.color,
+    color:'#000',
     marginRight:10,
     paddingHorizontal:10,
     fontSize:18,

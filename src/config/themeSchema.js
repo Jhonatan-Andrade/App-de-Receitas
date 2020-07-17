@@ -5,7 +5,7 @@ const darkSchema ={
     box:'#fff',
     boxtitle:'#000',
     background:'#192a56',
-    input:'#fff',
+    input:'#000',
     seta:'#000',
     statusbartitle:'light-content'
 } 
