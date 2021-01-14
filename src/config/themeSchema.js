@@ -18,6 +18,10 @@ const lightSchema ={
     seta:'#fff',
     statusbartitle:'dark-content'
 }
+
+import {StatusBar} from 'react-native';
+
+
 function Theme(params) {
     if (params == 'dark') {
         return darkSchema
@@ -26,4 +30,11 @@ function Theme(params) {
         return lightSchema
     }
 }
+
+
+StatusBar.setBackgroundColor(Theme.background);
+StatusBar.setBarStyle(Theme.statusbartitle)
+
+
+
 export default Theme('dark')
